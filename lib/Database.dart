@@ -74,10 +74,17 @@ class DBProvider {
     return list;
   }
 
-  getDoneTodos() async {
+  Future<List<Todo>> getDoneTodos() async {
     final db = await database;
-    var res = await db.rawQuery("SELECT * FROM Todo WHERE isDone=true");
-    List<Todo> list = res.isNotEmpty ? res.map((e) => Todo.fromMap(e)).toList() : null;
+    var res = await db.rawQuery("SELECT * FROM Todo WHERE isDone=1");
+    List<Todo> list = res.isNotEmpty ? res.map((e) => Todo.fromMap(e)).toList() : [];
+    return list;
+  }
+
+  Future<List<Todo>> getNotDoneTodos() async {
+    final db = await database;
+    var res = await db.rawQuery("SELECT * FROM Todo WHERE isDone=0");
+    List<Todo> list = res.isNotEmpty ? res.map((e) => Todo.fromMap(e)).toList() : [];
     return list;
   }
 
